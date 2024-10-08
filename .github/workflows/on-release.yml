@@ -18,19 +18,19 @@ jobs:
         run: |
           mkdir dist
           go mod tidy
-          GOOS=linux GOARCH=amd64 go build endlessh-go -o dist/endlessh-go
+          GOOS=linux GOARCH=amd64 go build -o dist/endlessh-go endlessh-go
           tar cfz dist/endlessh-go-${{ github.event.release.name }}-linux-amd64.tar.gz dist/endlessh-go
           rm dist/endlessh-go
-          GOOS=linux GOARCH=arm64 go build endlessh-go -o dist/endlessh-go
+          GOOS=linux GOARCH=arm64 go build -o dist/endlessh-go endlessh-go
           tar cfz dist/endlessh-go-${{ github.event.release.name }}-linux-arm64.tar.gz dist/endlessh-go
           rm dist/endlessh-go
-          GOOS=darwin GOARCH=amd64 go build endlessh-go -o dist/endlessh-go
+          GOOS=darwin GOARCH=amd64 go build -o dist/endlessh-go endlessh-go
           tar cfz dist/endlessh-go-${{ github.event.release.name }}-darwin-amd64.tar.gz dist/endlessh-go
           rm dist/endlessh-go
-          GOOS=darwin GOARCH=arm64 go build endlessh-go -o dist/endlessh-go
+          GOOS=darwin GOARCH=arm64 go build -o dist/endlessh-go endlessh-go
           tar cfz dist/endlessh-go-${{ github.event.release.name }}-darwin-arm64.tar.gz dist/endlessh-go
           rm dist/endlessh-go
-          GOOS=windows GOARCH=amd64 go build endlessh-go -o dist/endlessh-go.exe
+          GOOS=windows GOARCH=amd64 go build -o dist/endlessh-go.exe endlessh-go
           zip dist/endlessh-go-${{ github.event.release.name }}-windows-amd64.tar.gz dist/endlessh-go.exe
           rm dist/endlessh-go.exe
       - name: asd
