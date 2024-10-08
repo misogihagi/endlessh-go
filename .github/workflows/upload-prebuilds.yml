@@ -26,7 +26,8 @@ jobs:
           ls
           GOOS=linux GOARCH=amd64 go build endlessh-go
           ls
-          archive_name=$(endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz | tr / -)
+          archive_name=$(echo endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz | tr / -)
+          echo $archive_name
           tar cfz $archive_name endlessh-go
       - name: asd
         run: ls dist
