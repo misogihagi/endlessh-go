@@ -1,0 +1,37 @@
+on:
+  release:
+    types:
+      - created  
+
+jobs:
+  build:
+    name: Build and upload binary
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-22.04-2core-arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Generate build files
+        run: |
+          go mod tidy
+          GOOS=linux GOARCH=amd64 go build endlessh-go
+          tar cfz endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz endlessh-go
+      - name: asd
+        run: ls dist
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz
+          asset_name: endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz
+          asset_content_type: application/gzip
