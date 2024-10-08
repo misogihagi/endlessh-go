@@ -14,13 +14,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: asd
+      - name: Generate build files
         run: |
-          GOOS=linux GOARCH=amd64 go build main.go
-          GOOS=linux GOARCH=arm64 go build main.go
-          GOOS=darwin GOARCH=amd64 go build main.go
-          GOOS=darwin GOARCH=arm64 go build main.go
-          GOOS=windows GOARCH=amd64 go build main.go
+          go mod tidy
+          GOOS=linux GOARCH=amd64 go build endlessh-go
+          GOOS=linux GOARCH=arm64 go build endlessh-go
+          GOOS=darwin GOARCH=amd64 go build endlessh-go
+          GOOS=darwin GOARCH=arm64 go build endlessh-go
+          GOOS=windows GOARCH=amd64 go build endlessh-go
       - name: asd
         run: ls
       - name: Generate build files
