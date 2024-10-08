@@ -14,6 +14,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: asd
+        run: |
+          GOOS=linux GOARCH=amd64 go build main.go
+          GOOS=linux GOARCH=arm64 go build main.go
+          GOOS=darwin GOARCH=amd64 go build main.go
+          GOOS=darwin GOARCH=arm64 go build main.go
+          GOOS=windows GOARCH=amd64 go build main.go
+      - name: asd
+        run: ls
       - name: Generate build files
         uses: thatisuday/go-cross-build@v1
         with:
@@ -22,8 +31,6 @@ jobs:
             name: 'endlessh'
             compress: 'true'
             dest: 'dist'
-      - name: asd
-        run: ls
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
