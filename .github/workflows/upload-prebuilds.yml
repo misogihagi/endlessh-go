@@ -27,17 +27,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Generate build files
-        run: |
-          go mod tidy
-          go build endlessh-go
-
       # for mac
       - name: Install go
         if: runner.os == 'macOS'
         run: |
           brew install go
 
+      - name: Generate build files
+        run: |
+          go mod tidy
+          go build endlessh-go
       # for linux
       - name: Compress binary
         id: compress_linux
@@ -46,6 +45,7 @@ jobs:
           archive_name=$(echo endlessh-go-${{ github.event.release.name }}-${{ matrix.platform }}.tar.gz | tr / -)
           tar cfz $archive_name endlessh-go
           echo "archive_name=$archive_name" >> "$GITHUB_OUTPUT"
+          ls -l
       - name: Upload Release Asset
         if: runner.os == 'Linux'
         uses: actions/upload-release-asset@v1
@@ -65,6 +65,7 @@ jobs:
           archive_name=$(echo endlessh-go-${{ github.event.release.name }}-${{ runner.os }}.tar.gz | tr / -)
           tar cfz $archive_name endlessh-go
           echo "archive_name=$archive_name" >> "$GITHUB_OUTPUT"
+          ls -l
       - name: Upload Release Asset
         if: runner.os == 'Linux'
         uses: actions/upload-release-asset@v1
