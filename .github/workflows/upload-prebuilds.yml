@@ -30,7 +30,13 @@ jobs:
       - name: Generate build files
         run: |
           go mod tidy
-          build endlessh-go
+          go build endlessh-go
+
+      # for mac
+      - name: Install go
+        if: runner.os == 'macOS'
+        run: |
+          brew install go
 
       # for linux
       - name: Compress binary
