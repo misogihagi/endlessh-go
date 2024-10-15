@@ -17,28 +17,19 @@ jobs:
 
           cat << 'EOF' > build.sh
           go build endlessh-go
-          echo endlessh-go-${{ github.event.release.name }}-$GOOS-$GOARCH.tar.gz
-          archive_name=$(echo endlessh-go-${{ github.event.release.name }}-$GOOS-$GOARCH.tar.gz)
+          echo endlessh-go-${{ github.event.release.name }}-$1-$2.tar.gz
+          archive_name=$(echo endlessh-go-${{ github.event.release.name }}-$1-$2.tar.gz)
           tar cfz $archive_name endlessh-go
-          echo "archive_name_$GOOS_$GOARCH=$archive_name" >> "$GITHUB_OUTPUT"
+          echo "archive_name_$1_$2=$archive_name" >> "$GITHUB_OUTPUT"
           EOF
           chmod +x build.sh
           cat build.sh
 
-          GOOS=linux
-          GOARCH=amd64
-          ./build.sh
-          GOARCH=arm64
-          ./build.sh
-          GOOS=darwin
-          GOARCH=amd64
-          ./build.sh
-          GOARCH=arm64
-          ./build.sh
-          GOOS=windows
-          GOARCH=amd64
-          ./build.sh          
-          
+          ./build.sh linux amd64
+          ./build.sh linux arm64
+          ./build.sh darwin amd64
+          ./build.sh darwin arm64
+          ./build.sh windows amd64
           echo "archive_name_$GOOS_$GOARCH=$archive_name"
           ls -l
       - name: Upload Release Asset
