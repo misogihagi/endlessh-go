@@ -17,7 +17,7 @@ jobs:
 
           cat << 'EOF' > build.sh
           go build endlessh-go
-          archive_name=$(echo endlessh-go-$GOOS-$GOARCH.tar.gz)
+          archive_name=$(echo endlessh-go-${{ github.event.release.name }}-$GOOS-$GOARCH.tar.gz)
           tar cfz $archive_name endlessh-go
           echo "archive_name_$GOOS_$GOARCH=$archive_name" >> "$GITHUB_OUTPUT"
           EOF
