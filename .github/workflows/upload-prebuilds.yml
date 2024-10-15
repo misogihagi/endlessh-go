@@ -14,31 +14,61 @@ jobs:
       - name: Generate build files
         run: |
           go mod tidy
-
           cat << 'EOF' > build.sh
-          go build endlessh-go
-          echo endlessh-go-${{ github.event.release.name }}-$1-$2.tar.gz
+          GOOS=$1 GOARCH=$2 go build endlessh-go
           archive_name=$(echo endlessh-go-${{ github.event.release.name }}-$1-$2.tar.gz)
           tar cfz $archive_name endlessh-go
           echo "archive_name_$1_$2=$archive_name" >> "$GITHUB_OUTPUT"
           EOF
           chmod +x build.sh
-          cat build.sh
-
           ./build.sh linux amd64
           ./build.sh linux arm64
           ./build.sh darwin amd64
           ./build.sh darwin arm64
           ./build.sh windows amd64
-          echo "archive_name_$GOOS_$GOARCH=$archive_name"
-          ls -l
+      
       - name: Upload Release Asset
-        if: runner.os == 'Linux'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.compress_linux.outputs.archive_name }}
-          asset_name: ${{ steps.compress_linux.outputs.archive_name }}
+          asset_path: ${{ steps.compress_linux.outputs.archive_name_linux_amd64 }}
+          asset_name: ${{ steps.compress_linux.outputs.archive_name_linux_amd64 }}
+          asset_content_type: application/gzip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress_linux.outputs.archive_name_linux_arm64 }}
+          asset_name: ${{ steps.compress_linux.outputs.archive_name_linux_arm64 }}
+          asset_content_type: application/gzip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress_linux.outputs.archive_name_darwin_amd64 }}
+          asset_name: ${{ steps.compress_linux.outputs.archive_name_darwin_amd64 }}
+          asset_content_type: application/gzip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress_linux.outputs.archive_name_darwin_arm64 }}
+          asset_name: ${{ steps.compress_linux.outputs.archive_name_darwin_arm64 }}
+          asset_content_type: application/gzip
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.compress_linux.outputs.archive_name_windows_amd64 }}
+          asset_name: ${{ steps.compress_linux.outputs.archive_name_windows_amd64 }}
           asset_content_type: application/gzip
